@@ -289,4 +289,4 @@ opcao = input("Escolha: ")
 if opcao == "1": 
     aplicar_atestado()
 elif opcao == "2": 
-    visualizar_atestados()
+    visualizar_atestados() 
