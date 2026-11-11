@@ -3,15 +3,13 @@
 usuario = {}
 
 def cadastar():
-    nome = input("Digite seu nome: ")
     cpf = input("Digite seu CPF: ")
     email = input("Digite seu e-mail: ")
     senha = input("Crie uma senha: ")
     
     usuarios[email] = {
-        "nome": nome,
-        "cpf": cpf,
-        "senha": senha
+        "senha": senha,
+        "cpf": cpf
     }
     
     print("cadastro realizado com sucesso!")
@@ -40,9 +38,8 @@ elif opcao == "2":
 perfil = {}
 
 def criar_perfil():
-    perfil["nome"] = input("Nome: ")
-    perfil["email"] = input("E-mail: ")
-    perfil["telefone"] = input("Telefone: ")
+    perfil["nome"] = input("nome: ")
+    perfil["cargo"] = input("cargo: ")
     print("Perfil criado!")
 
 def consultar_perfil(): 
@@ -79,47 +76,49 @@ elif opcao == "4":
 # Ver informações de perfil 
 
 perfil = {
-    "nome" = "Patrícia B. Alves"
-    "email" = "patriciatec123@gmail.com"
-    "cpf" = "123-456-789-00"
+    "nome" = "Patrícia B. Alves",
+    "email" = "patriciatec123@gmail.com",
+    "cpf" = "123-456-789-00",
+    "cargo" = "Técnica em enfermagem"
 }
 
-def visualizar_perfil():
+def ver_perfil():
     print("\n--- INFORMAÇÕES DO PERFIL ---")
     print("Nome:", perfil["nome"])
-    print("E-mail", perfil["email"])
-    print("CPF", perfil["cpf"])
-    
-visualizar_perfil 
+    print("E-mail:", perfil["email"])
+    print("CPF:", perfil["cpf"])
+    print("Cargo:", perfil["cargo"])
+
+ver_perfil()
 
 # Gerenciar escalas(CRUD)
 
 escalas = []
 
 def criar_escala():
-    data = input("Data da escala: ")
-    horario = input("Horário: ")
+    data_inicio = input("Data do início da escala: ")
+    data_fim = input("Data do fim da escala: ")
     participante = input("Participante: ")
 
     escala = {
-        "data": data,
-        "horario": harario,
+        "data inicio": data_inicio,
+        "data fim": data_fim,
         "participante": participante
     }
     
     escalas.append(escala)
     print("Escala cadastrada!")
 
-def visualizar_escalas():
+def ver_escalas():
     for escala in escalas:
         print(escala)
 
 def alterar_escala():
     i = int(input("Número da escala: "))
     
-    if 0 <= indice < len(escalas):
-        escalas[i]["data"] = input("Nova data: ")
-        escalas[i]["horario"] = input("Novo horário: ")
+    if 0 <= i < len(escalas):
+        escalas[i]["data inicio"] = input("Nova data do início da escala: ")
+        escalas[i]["data fim"] = input("Nova data do fim da escala: ")
         print("Escala alterada!")
     else:
         print("Escala não encontrada.")
@@ -143,7 +142,7 @@ opcao = input("Escolha: ")
 if opcao == "1": 
     criar_escala()
 elif opcao == "2": 
-    visualizar_escalas()
+    ver_escalas()
 elif opcao == "3":
     alterar_escala()
 elif opcao == "4":
@@ -154,28 +153,33 @@ elif opcao == "4":
  
 escalas = [
     {
-        "data": "27/04/2026"
-        "horario": "08:00" 
+        "data inicio": "27/04/2026"
+        "data fim": "01/05/2026" 
         "participante": "Jorge"
-
-        "data": "04/05/2026"
-        "horario": "08:00" 
+    },
+    {
+        "data inicio": "04/05/2026"
+        "data fim": "08/05/2026" 
         "participante": "Luna"
-
-        "data": "11/05/2026"
-        "horario": "08:00" 
+    },
+    {
+        "data inicio": "11/05/2026"
+        "data fim": "15/05/2026" 
         "participante": "Patrícia"
-
-        "data": "18/05/2026"
-        "horario": "08:00" 
+    },
+    {
+        "data inicio": "18/05/2026"
+        "data fim": "22/05/2026" 
         "participante": "Beto"
-
-        "data": "25/05/2026"
-        "horario": "08:00" 
+    },
+    {
+        "data inicio": "25/05/2026"
+        "data fim": "29/05/2026" 
         "participante": "Jorge"
-
-        "data": "01/06/2026"
-        "horario": "08:00" 
+    },
+    {
+        "data inicio": "01/06/2026"
+        "data fim": "05/06/2026" 
         "participante": "Luna"
     }
 ]
@@ -184,8 +188,8 @@ def ver_escala():
     print("n\--- ESCALA ---")
     
     for escala in escalas:
-        print("Data:", escala["data"])
-        print("Horário:", escala["horario"])
+        print("Data de início:", escala["data inicio"])
+        print("Data de fim:", escala["data fim"])
         print("Participante:", escala["participante"])
         
 ver_escala()
@@ -241,8 +245,8 @@ def exportar_arquivo():
         arquivo.writer("--- RELATÓRIO DE ESCALAS")
     
         for escala in esclas:
-            arquivo.writer("Data: " + escala[0] + "\n")
-            arquivo.writer("Horário: " + escala[1] + "\n") 
+            arquivo.writer("Data de início: " + escala[0] + "\n")
+            arquivo.writer("Data de fim: " + escala[1] + "\n") 
             arquivo.writer("Participante: " + escala[2] + "\n")
     
     print("Arquivo exportado com sucesso!")
