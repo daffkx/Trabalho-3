@@ -6,13 +6,11 @@ class Usuario:
         self.cargo = cargo
         self.senha = senha
 
-
 class Escala:
     def __init__(self, participante, data_inicio, data_fim):
         self.participante = participante
         self.data_inicio = data_inicio
         self.data_fim = data_fim
-
 
 class Mensagem:
     def __init__(self, autor, texto):
@@ -22,14 +20,12 @@ class Mensagem:
     def exibir(self):
         return f"{self.autor}: {self.texto}"
 
-
 class Atestado:
     def __init__(self, tipo, inicio, fim, documento):
         self.tipo = tipo
         self.inicio = inicio
         self.fim = fim
         self.documento = documento
-
 
 class Sistema:
     def __init__(self):
@@ -39,7 +35,7 @@ class Sistema:
         self.mensagens = []
         self.atestados = []
 
-    # Cadastro e login
+# cadastro e login
 
     def cadastrar(self):
         nome = input("Digite seu nome: ")
