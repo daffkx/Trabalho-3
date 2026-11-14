@@ -1,348 +1,388 @@
-usuarios = {}
-usuario_logado = None
+class Usuario:
+    def __init__(self, nome, cpf, email, cargo, senha):
+        self.nome = nome
+        self.cpf = cpf
+        self.email = email
+        self.cargo = cargo
+        self.senha = senha
 
-escalas = []
-mensagens = []
-atestados = []
 
-# cadastro e login do usuário
+class Escala:
+    def __init__(self, participante, data_inicio, data_fim):
+        self.participante = participante
+        self.data_inicio = data_inicio
+        self.data_fim = data_fim
 
-def cadastrar():
 
-    nome = input("Digite seu nome: ")
-    cpf = input("Digite seu CPF: ")
-    email = input("Digite seu e-mail: ")
-    cargo = input("Digite seu cargo: ")
-    senha = input("Crie uma senha: ")
+class Mensagem:
+    def __init__(self, autor, texto):
+        self.autor = autor
+        self.texto = texto
 
-    usuarios[email] = {
-        "nome": nome,
-        "cpf": cpf,
-        "cargo": cargo,
-        "senha": senha
-    }
+    def exibir(self):
+        return f"{self.autor}: {self.texto}"
 
-    print("Cadastro realizado com sucesso!")
 
-def login():
+class Atestado:
+    def __init__(self, tipo, inicio, fim, documento):
+        self.tipo = tipo
+        self.inicio = inicio
+        self.fim = fim
+        self.documento = documento
 
-    global usuario_logado
 
-    email = input("Digite seu e-mail: ")
-    senha = input("Digite sua senha: ")
+class Sistema:
+    def __init__(self):
+        self.usuarios = {}
+        self.usuario_logado = None
+        self.escalas = []
+        self.mensagens = []
+        self.atestados = []
 
-    if email in usuarios and usuarios[email]["senha"] == senha:
-        usuario_logado = email
-        print("Login realizado com sucesso!")
-        return True
+    # Cadastro e login
 
-    print("Usuário ou senha incorretos.")
-    return False
+    def cadastrar(self):
+        nome = input("Digite seu nome: ")
+        cpf = input("Digite seu CPF: ")
+        email = input("Digite seu e-mail: ")
+        cargo = input("Digite seu cargo: ")
+        senha = input("Crie uma senha: ")
 
-# funções do perfil do usuário
+        usuario = Usuario(nome, cpf, email, cargo, senha)
 
-def ver_perfil():
+        self.usuarios[email] = usuario
 
-    if usuario_logado is None:
-        print("Nenhum usuário logado.")
-        return
+        print("Cadastro realizado com sucesso!")
 
-    usuario = usuarios[usuario_logado]
+    def login(self):
+        email = input("Digite seu e-mail: ")
+        senha = input("Digite sua senha: ")
 
-    print("\n--- INFORMAÇÕES DO PERFIL ---")
-    print("Nome:", usuario["nome"])
-    print("E-mail:", usuario_logado)
-    print("CPF:", usuario["cpf"])
-    print("Cargo:", usuario["cargo"])
+        if email in self.usuarios and self.usuarios[email].senha == senha:
+            self.usuario_logado = self.usuarios[email]
+            print("Login realizado com sucesso!")
+            return True
 
-# funções de escala
+        print("Usuário ou senha incorretos.")
+        return False
 
-def criar_escala():
+# perfil
 
-    participante = input("Nome do participante: ")
+    def ver_perfil(self):
 
-    data_inicio = input("Data de início da escala: ")
-    data_fim = input("Data de fim da escala: ")
+        if self.usuario_logado is None:
+            print("Nenhum usuário logado.")
+            return
 
-    escala = {
-        "data inicio": data_inicio,
-        "data fim": data_fim,
-        "participante": participante
-    }
+        usuario = self.usuario_logado
 
-    escalas.append(escala)
+        print("\n--- INFORMAÇÕES DO PERFIL ---")
+        print("Nome:", usuario.nome)
+        print("E-mail:", usuario.email)
+        print("CPF:", usuario.cpf)
+        print("Cargo:", usuario.cargo)
 
-    print("Escala cadastrada com sucesso!")
+# escalas
 
-def ver_escalas():
+    def criar_escala(self):
 
-    if len(escalas) == 0:
-        print("Nenhuma escala cadastrada.")
-        return
+        participante = input("Nome do participante: ")
+        data_inicio = input("Data de início da escala: ")
+        data_fim = input("Data de fim da escala: ")
 
-    print("\n--- ESCALAS ---")
-
-    for i, escala in enumerate(escalas):
-
-        print(f"\nEscala {i}")
-
-        print("Data de início:", escala["data inicio"])
-        print("Data de fim:", escala["data fim"])
-        print("Participante:", escala["participante"])
-
-def alterar_escala():
-
-    if len(escalas) == 0:
-        print("Nenhuma escala cadastrada.")
-        return
-
-    ver_escalas()
-
-    i = int(input("\nNúmero da escala: "))
-
-    if 0 <= i < len(escalas):
-
-        escalas[i]["participante"] = input(
-            "Novo participante: "
+        escala = Escala(
+            participante,
+            data_inicio,
+            data_fim
         )
 
-        escalas[i]["data inicio"] = input(
-            "Nova data de início: "
+        self.escalas.append(escala)
+
+        print("Escala cadastrada com sucesso!")
+
+    def ver_escalas(self):
+
+        if len(self.escalas) == 0:
+            print("Nenhuma escala cadastrada.")
+            return
+
+        print("\n--- ESCALAS ---")
+
+        for i, escala in enumerate(self.escalas):
+
+            print(f"\nEscala {i}")
+
+            print("Data de início:", escala.data_inicio)
+            print("Data de fim:", escala.data_fim)
+            print("Participante:", escala.participante)
+
+    def alterar_escala(self):
+
+        if len(self.escalas) == 0:
+            print("Nenhuma escala cadastrada.")
+            return
+
+        self.ver_escalas()
+
+        try:
+            i = int(input("\nNúmero da escala: "))
+
+            if 0 <= i < len(self.escalas):
+
+                self.escalas[i].participante = input(
+                    "Novo participante: "
+                )
+
+                self.escalas[i].data_inicio = input(
+                    "Nova data de início: "
+                )
+
+                self.escalas[i].data_fim = input(
+                    "Nova data de fim: "
+                )
+
+                print("Escala alterada com sucesso!")
+
+            else:
+                print("Escala não encontrada.")
+
+        except ValueError:
+            print("Digite um número válido.")
+
+    def excluir_escala(self):
+
+        if len(self.escalas) == 0:
+            print("Nenhuma escala cadastrada.")
+            return
+
+        self.ver_escalas()
+
+        try:
+            i = int(input("\nNúmero da escala: "))
+
+            if 0 <= i < len(self.escalas):
+
+                self.escalas.pop(i)
+
+                print("Escala excluída com sucesso!")
+
+            else:
+                print("Escala não encontrada.")
+
+        except ValueError:
+            print("Digite um número válido.")
+
+# chat
+
+    def visualizar_chat(self):
+
+        print("\n--- HISTÓRICO DO CHAT ---")
+
+        if len(self.mensagens) == 0:
+            print("Nenhuma mensagem enviada.")
+            return
+
+        for mensagem in self.mensagens:
+            print(mensagem.exibir())
+
+    def enviar_mensagem(self):
+
+        if self.usuario_logado is None:
+            print("Faça login primeiro.")
+            return
+
+        texto = input("Digite sua mensagem: ")
+
+        mensagem = Mensagem(
+            self.usuario_logado.nome,
+            texto
         )
 
-        escalas[i]["data fim"] = input(
-            "Nova data de fim: "
-        )
+        self.mensagens.append(mensagem)
 
-        print("Escala alterada com sucesso!")
+        print("Mensagem enviada com sucesso!")
 
-    else:
-        print("Escala não encontrada.")
+# exportar arquivo
 
-def excluir_escala():
+    def exportar_arquivo(self):
 
-    if len(escalas) == 0:
-        print("Nenhuma escala cadastrada.")
-        return
+        if len(self.escalas) == 0:
+            print("Nenhuma escala para exportar.")
+            return
 
-    ver_escalas()
-
-    i = int(input("\nNúmero da escala: "))
-
-    if 0 <= i < len(escalas):
-
-        escalas.pop(i)
-
-        print("Escala excluída com sucesso!")
-
-    else:
-        print("Escala não encontrada.")
-
-# funções do chat
-
-def visualizar_chat():
-
-    print("\n--- HISTÓRICO DO CHAT ---")
-
-    if len(mensagens) == 0:
-        print("Nenhuma mensagem enviada.")
-        return
-
-    for mensagem in mensagens:
-        print(mensagem)
-
-def enviar_mensagem():
-
-    usuario = usuarios[usuario_logado]["nome"]
-
-    mensagem = input("Digite sua mensagem: ")
-
-    mensagens.append(usuario + ": " + mensagem)
-
-    print("Mensagem enviada com sucesso!")
-
-#funções pra exportar arquivo
-
-def exportar_arquivo():
-
-    if len(escalas) == 0:
-        print("Nenhuma escala para exportar.")
-        return
-
-    with open(
-        "relatorio_escalas.txt",
-        "w",
-        encoding="utf-8"
-    ) as arquivo:
-
-        arquivo.write(
-            "--- RELATÓRIO DE ESCALAS ---\n\n"
-        )
-
-        for escala in escalas:
+        with open(
+            "relatorio_escalas.txt",
+            "w",
+            encoding="utf-8"
+        ) as arquivo:
 
             arquivo.write(
-                "Data de início: "
-                + escala["data inicio"]
-                + "\n"
+                "--- RELATÓRIO DE ESCALAS ---\n\n"
             )
 
-            arquivo.write(
-                "Data de fim: "
-                + escala["data fim"]
-                + "\n"
-            )
+            for escala in self.escalas:
 
-            arquivo.write(
-                "Participante: "
-                + escala["participante"]
-                + "\n\n"
-            )
+                arquivo.write(
+                    f"Data de início: {escala.data_inicio}\n"
+                )
 
-    print("Arquivo exportado com sucesso!")
-    print("Nome do arquivo: relatorio_escalas.txt")
+                arquivo.write(
+                    f"Data de fim: {escala.data_fim}\n"
+                )
 
-# funções de atestado ou declaração
+                arquivo.write(
+                    f"Participante: {escala.participante}\n\n"
+                )
 
-def aplicar_atestado():
+        print("Arquivo exportado com sucesso!")
+        print("Nome do arquivo: relatorio_escalas.txt")
 
-    tipo = input(
-        "Tipo (Atestado ou Declaração): "
-    )
+# atestado ou delaração
 
-    inicio = input(
-        "Data de início: "
-    )
+    def aplicar_atestado(self):
 
-    fim = input(
-        "Data de término: "
-    )
+        tipo = input(
+            "Tipo (Atestado ou Declaração): "
+        )
 
-    documento = input(
-        "Nome do arquivo digital: "
-    )
+        inicio = input(
+            "Data de início: "
+        )
 
-    if tipo.lower() not in [
-        "atestado",
-        "declaração",
-        "declaracao"
-    ]:
+        fim = input(
+            "Data de término: "
+        )
 
-        print("Tipo inválido.")
-        return
+        documento = input(
+            "Nome do arquivo digital: "
+        )
 
-    atestado = {
-        "tipo": tipo,
-        "inicio": inicio,
-        "fim": fim,
-        "documento": documento
-    }
+        if tipo.lower() not in [
+            "atestado",
+            "declaração",
+            "declaracao"
+        ]:
 
-    atestados.append(atestado)
+            print("Tipo inválido.")
+            return
 
-    print(
-        "Atestado/declaração registrado com sucesso!"
-    )
+        atestado = Atestado(
+            tipo,
+            inicio,
+            fim,
+            documento
+        )
 
-def visualizar_atestados():
+        self.atestados.append(atestado)
 
-    print("\n--- DOCUMENTOS REGISTRADOS ---")
+        print(
+            "Atestado/declaração registrado com sucesso!"
+        )
 
-    if len(atestados) == 0:
-        print("Nenhum documento registrado.")
-        return
+    def visualizar_atestados(self):
 
-    for atestado in atestados:
+        print("\n--- DOCUMENTOS REGISTRADOS ---")
 
-        print("\nTipo:", atestado["tipo"])
-        print("Início:", atestado["inicio"])
-        print("Fim:", atestado["fim"])
-        print("Documento:", atestado["documento"])
+        if len(self.atestados) == 0:
+            print("Nenhum documento registrado.")
+            return
 
-# menu quando você já tá logado
+        for atestado in self.atestados:
 
-def menu_principal():
+            print("\nTipo:", atestado.tipo)
+            print("Início:", atestado.inicio)
+            print("Fim:", atestado.fim)
+            print("Documento:", atestado.documento)
 
-    while True:
+# menu
 
-        print("\n========== MENU ==========")
-        print("1 - Ver informações do perfil")
-        print("2 - Criar escala")
-        print("3 - Visualizar escalas")
-        print("4 - Alterar escala")
-        print("5 - Excluir escala")
-        print("6 - Ver chat")
-        print("7 - Enviar mensagem")
-        print("8 - Exportar arquivo")
-        print("9 - Aplicar atestado/declaração")
-        print("10 - Visualizar documentos")
-        print("0 - Sair")
+    def menu_principal(self):
 
-        opcao = input("Escolha: ")
+        while True:
 
-        if opcao == "1":
-            ver_perfil()
+            print("\n========== MENU ==========")
+            print("1 - Ver informações do perfil")
+            print("2 - Criar escala")
+            print("3 - Visualizar escalas")
+            print("4 - Alterar escala")
+            print("5 - Excluir escala")
+            print("6 - Ver chat")
+            print("7 - Enviar mensagem")
+            print("8 - Exportar arquivo")
+            print("9 - Aplicar atestado/declaração")
+            print("10 - Visualizar documentos")
+            print("0 - Logout")
 
-        elif opcao == "2":
-            criar_escala()
+            opcao = input("Escolha: ")
 
-        elif opcao == "3":
-            ver_escalas()
+            if opcao == "1":
+                self.ver_perfil()
 
-        elif opcao == "4":
-            alterar_escala()
+            elif opcao == "2":
+                self.criar_escala()
 
-        elif opcao == "5":
-            excluir_escala()
+            elif opcao == "3":
+                self.ver_escalas()
 
-        elif opcao == "6":
-            visualizar_chat()
+            elif opcao == "4":
+                self.alterar_escala()
 
-        elif opcao == "7":
-            enviar_mensagem()
+            elif opcao == "5":
+                self.excluir_escala()
 
-        elif opcao == "8":
-            exportar_arquivo()
+            elif opcao == "6":
+                self.visualizar_chat()
 
-        elif opcao == "9":
-            aplicar_atestado()
+            elif opcao == "7":
+                self.enviar_mensagem()
 
-        elif opcao == "10":
-            visualizar_atestados()
+            elif opcao == "8":
+                self.exportar_arquivo()
 
-        elif opcao == "0":
+            elif opcao == "9":
+                self.aplicar_atestado()
 
-            print("Logout realizado.")
-            break
+            elif opcao == "10":
+                self.visualizar_atestados()
 
-        else:
-            print("Opção inválida.")
+            elif opcao == "0":
+                print("Logout realizado.")
+                self.usuario_logado = None
+                break
 
-# menu pra cadastrar ou logar
+            else:
+                print("Opção inválida.")
 
-while True:
+    def executar(self):
 
-    print("\n===== ACESSO =====")
-    print("1 - Cadastrar")
-    print("2 - Fazer login")
-    print("0 - Encerrar sistema")
+        while True:
 
-    opcao = input("Escolha: ")
+            print("\n===== ACESSO =====")
+            print("1 - Cadastrar")
+            print("2 - Fazer login")
+            print("0 - Encerrar sistema")
 
-    if opcao == "1":
+            opcao = input("Escolha: ")
 
-        cadastrar()
+            if opcao == "1":
 
-    elif opcao == "2":
+                self.cadastrar()
 
-        if login():
-            menu_principal()
+            elif opcao == "2":
 
-    elif opcao == "0":
+                if self.login():
+                    self.menu_principal()
 
-        print("Sistema encerrado.")
-        break
+            elif opcao == "0":
 
-    else:
+                print("Sistema encerrado.")
+                break
 
-        print("Opção inválida.")
+            else:
+                print("Opção inválida.")
+
+# iniciar 
+
+if __name__ == "__main__":
+    sistema = Sistema()
+    sistema.executar()
