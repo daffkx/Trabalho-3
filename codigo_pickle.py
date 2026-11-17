@@ -43,6 +43,8 @@ class Sistema:
 # pickle
 
     def salvar_dados(self):
+        print("Salvando...")
+
         dados = {
             "usuarios": self.usuarios,
             "escalas": self.escalas,
@@ -53,10 +55,19 @@ class Sistema:
         with open("dados.pkl", "wb") as arquivo:
             pickle.dump(dados, arquivo)
 
+        print(os.path.abspath("dados.pkl"))
+        print("Salvo!")
+
     def carregar_dados(self):
+        print("Carregando Dados...")
+
         if os.path.exists("dados.pkl"):
+            print("Arquivo encontrado.")
+
             with open("dados.pkl", "rb") as arquivo:
                 dados = pickle.load(arquivo)
+
+            print("Dados carregados com sucesso!")
 
             self.usuarios = dados.get("usuarios", {})
             self.escalas = dados.get("escalas", [])
